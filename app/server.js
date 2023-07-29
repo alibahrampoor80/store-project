@@ -5,7 +5,8 @@ const http = require('http')
 const {allRoutes} = require("./router/router");
 const morgan = require('morgan')
 const createError = require('http-errors')
-
+const swaggerUi = require('swagger-ui-express')
+const swaggerJsDocs = require('swagger-jsdoc')
 module.exports = class Application {
     #app = express()
     #DB_URL
@@ -26,6 +27,26 @@ module.exports = class Application {
         this.#app.use(express.json())
         this.#app.use(express.urlencoded({extended: true}))
         this.#app.use(express.static(path.join(__dirname, '..', 'public')))
+        this.#app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerJsDocs({
+            swaggerDefinition: {
+                info: {
+                    title: "فروشگاه افلاک",
+                    version: "1.0.1",
+                    description: "اولین فروشگاه علی بهرامپور",
+                    contact: {
+                        name: "ali bahrampoor",
+                        url: "https://ali-bahrampoor.ir",
+                        email:"ali.bahrampoor1380@gmail.com"
+                    }
+                },
+                servers: [
+                    {
+                        url: "http://localhost:5000/login"
+                    }
+                ]
+            },
+            apis: ['./app/router/**/*.js']
+        })))
     }
 
     createServer() {

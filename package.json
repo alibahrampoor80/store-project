@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon node index.js"
+    "dev": "nodemon node index.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +18,12 @@
     "http-errors": "^2.0.0",
     "http-status-codes": "^2.2.0",
     "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.4.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
   }
 }
