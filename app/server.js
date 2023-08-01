@@ -7,6 +7,8 @@ const morgan = require('morgan')
 const createError = require('http-errors')
 const swaggerUi = require('swagger-ui-express')
 const swaggerJsDocs = require('swagger-jsdoc')
+const cors = require('cors')
+
 module.exports = class Application {
     #app = express()
     #DB_URL
@@ -16,6 +18,7 @@ module.exports = class Application {
         this.#PORT = PORT
         this.#DB_URL = DB_URL
         this.configApplication()
+        this.initRedis()
         this.connectToMongoDB()
         this.createServer()
         this.createRoutes()
@@ -23,6 +26,7 @@ module.exports = class Application {
     }
 
     configApplication() {
+        this.#app.use(cors())
         this.#app.use(morgan('dev'))
         this.#app.use(express.json())
         this.#app.use(express.urlencoded({extended: true}))
@@ -36,7 +40,7 @@ module.exports = class Application {
                     contact: {
                         name: "ali bahrampoor",
                         url: "https://ali-bahrampoor.ir",
-                        email:"ali.bahrampoor1380@gmail.com"
+                        email: "ali.bahrampoor1380@gmail.com"
                     }
                 },
                 servers: [
@@ -67,6 +71,10 @@ module.exports = class Application {
             console.log("disconnected mongodb")
             process.exit(0)
         })
+    }
+
+    initRedis() {
+        require('./utils/init_redis')
     }
 
     createRoutes() {

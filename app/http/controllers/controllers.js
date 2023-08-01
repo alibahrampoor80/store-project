@@ -5,7 +5,4 @@ module.exports = class Controller {
         autoBind(this)
     }
 
-    testMethod() {
-        return "test string"
-    }
 }

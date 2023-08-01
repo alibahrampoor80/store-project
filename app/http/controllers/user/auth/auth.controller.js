@@ -1,6 +1,11 @@
 const {getOtpSchema, checkOtpSchema} = require("../../../validator/user/auth.schema");
 const createError = require("http-errors");
-const {numberRandomGenerator, signAccessToken} = require("../../../../utils/functions");
+const {
+    numberRandomGenerator,
+    signAccessToken,
+    verifyRefreshToken,
+    signRefreshToken
+} = require("../../../../utils/functions");
 const {userModel} = require("../../../../models/users");
 const {expires_in, user_role} = require("../../../../utils/constans");
 const Controller = require('../../controllers')
@@ -37,23 +42,47 @@ class AuthController extends Controller {
             if (user.otp.code != code) throw createError.Unauthorized("کد ارسال شده صحیح نمیباشد");
 
             const now = (new Date()).getTime();
+
             if (+user.otp.expireIn < now) throw createError.Unauthorized('کد شما منقضی شده است')
             const accessToken = await signAccessToken(user._id)
+            const refreshToken = await signRefreshToken(user._id)
             return res.json({
                 data: {
-                    accessToken
+                    accessToken,
+                    refreshToken
                 }
             })
         } catch (err) {
-            console.log(err)
+            // console.log(err)
             next(err)
         }
     }
 
+    async refreshToken(req, res, next) {
+        try {
+            const {refreshToken} = req.body
+            const mobile = await verifyRefreshToken(refreshToken)
+            const user = await userModel.findOne({mobile})
+            const accessToken = await signAccessToken(user._id)
+            const newRefreshToken = await signRefreshToken(user._id)
+            return res.json({
+                data: {
+                    accessToken,
+                    refreshToken: newRefreshToken
+                }
+            })
+        } catch (err) {
+            next(err)
+        }
+    }
+
+
     async saveUser(mobile, code) {
+        const now = (new Date().getTime())
+
         let otp = {
             code,
-            expireIn: expires_in,
+            expireIn: now + 1200000
         }
 
         const result = await this.checkExitUser(mobile)
