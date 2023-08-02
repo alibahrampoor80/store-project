@@ -7,7 +7,7 @@ const {
     signRefreshToken
 } = require("../../../../utils/functions");
 const {userModel} = require("../../../../models/users");
-const {expires_in, user_role} = require("../../../../utils/constans");
+const {ROLES} = require("../../../../utils/constans");
 const Controller = require('../../controllers')
 
 class AuthController extends Controller {
@@ -95,7 +95,7 @@ class AuthController extends Controller {
             await userModel.create({
                 mobile,
                 otp,
-                role: [user_role]
+                role: [ROLES.USER]
             })
         )
     }
