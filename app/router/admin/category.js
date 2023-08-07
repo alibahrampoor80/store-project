@@ -9,6 +9,12 @@ const router = require("express").Router()
  *          tags : [category(AdminPanel)]
  *          summary : create new category title
  *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *              -   in : formData
  *                  type : string
  *                  required : true
@@ -32,6 +38,13 @@ router.post('/add', CategoryController.addCategory)
  *      get:
  *          tags : [category(AdminPanel)]
  *          summary : get all parents of category
+ *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *          responses :
  *              200 :
  *                  description : success
@@ -49,6 +62,12 @@ router.get('/parents', CategoryController.getAllParent)
  *          tags : [category(AdminPanel)]
  *          summary : get all parents of category
  *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *              -   in : path
  *                  name : parent
  *                  type : string
@@ -69,6 +88,13 @@ router.get('/children/:parent', CategoryController.getChildOfParents)
  *      get:
  *          tags : [category(AdminPanel)]
  *          summary : get all categories
+ *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *          responses :
  *              200 :
  *                  description : success
@@ -87,7 +113,13 @@ router.get('/all', CategoryController.getAllCategory)
  *      get:
  *          tags : [category(AdminPanel)]
  *          summary : get all category
- *
+ *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *          responses :
  *              200 :
  *                  description : success
@@ -104,6 +136,12 @@ router.get('/list-of-all', CategoryController.getAllCategoryWithoutPopulate)
  *          tags : [category(AdminPanel)]
  *          summary : edit update category title by id
  *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *              -   in : path
  *                  name : id
  *                  type : string
@@ -131,6 +169,12 @@ router.patch('/update/:id', CategoryController.editCategoryTitle)
  *          tags : [category(AdminPanel)]
  *          summary : find category by id
  *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *              -   in : path
  *                  name : id
  *                  type : string
@@ -152,6 +196,12 @@ router.get('/:id', CategoryController.getCategoryById)
  *          tags : [category(AdminPanel)]
  *          summary : remove  category
  *          parameters :
+ *              -   in : header
+ *                  example : bearer token...
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTMwMzE0OTM3MSIsImlhdCI6MTY5MTM5NTk5MSwiZXhwIjoxNjkxNDgyMzkxfQ.FiKsqHmHbKxK1RZXAO32P0qp2malqjapzQN_5VN9BQU
+ *                  name : accesstoken
+ *                  type : string
+ *                  required : true
  *              -   in : path
  *                  name : id
  *                  type : string

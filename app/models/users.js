@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     bills: {type: [], default: []},
     discount: {type: Number, default: 0},
     brithDay: {type: String},
-    role: {type: [String], default: ['USER']}
+    Roles: {type: [String], default: ['USER']}
 })
 
 

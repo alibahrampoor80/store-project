@@ -29,7 +29,7 @@ const router = require('express').Router()
  */
 
 
-router.get('/', verifyAccessToken, HomeController.indexPage)
+router.get('/', HomeController.indexPage)
 
 module.exports = {
     HomeRoutes: router
