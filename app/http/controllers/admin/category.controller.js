@@ -7,8 +7,9 @@ const mongoose = require('mongoose')
 class CategoryController extends Controller {
     async addCategory(req, res, next) {
         try {
-            await categorySchema.validateAsync(req.body)
+            console.log(req.body)
             const {title, parent} = req.body
+            await categorySchema.validateAsync(req.body)
             const category = await categoryModel.create({title, parent})
             if (!category) throw createError.InternalServerError("خطای داخلی")
             return res.status(201).json({
@@ -19,6 +20,7 @@ class CategoryController extends Controller {
 
             })
         } catch (err) {
+
             next(err)
         }
     }

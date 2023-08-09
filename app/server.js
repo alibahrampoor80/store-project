@@ -8,6 +8,7 @@ const createError = require('http-errors')
 const swaggerUi = require('swagger-ui-express')
 const swaggerJsDocs = require('swagger-jsdoc')
 const cors = require('cors')
+const systemInfo = require("systeminformation");
 
 module.exports = class Application {
     #app = express()
@@ -25,32 +26,55 @@ module.exports = class Application {
         this.errorHanding()
     }
 
-    configApplication() {
+    async configApplication() {
         this.#app.use(cors())
         this.#app.use(morgan('dev'))
         this.#app.use(express.json())
         this.#app.use(express.urlencoded({extended: true}))
         this.#app.use(express.static(path.join(__dirname, '..', 'public')))
-        this.#app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerJsDocs({
-            swaggerDefinition: {
-                info: {
-                    title: "فروشگاه افلاک",
-                    version: "1.0.1",
-                    description: "اولین فروشگاه علی بهرامپور",
-                    contact: {
-                        name: "ali bahrampoor",
-                        url: "https://ali-bahrampoor.ir",
-                        email: "ali.bahrampoor1380@gmail.com"
-                    }
-                },
-                servers: [
+        this.#app.use('/api-doc',
+            swaggerUi.serve,
+            swaggerUi.setup(
+                swaggerJsDocs(
                     {
-                        url: "http://localhost:5000/login"
-                    }
-                ]
-            },
-            apis: ['./app/router/**/*.js']
-        })))
+                        swaggerDefinition: {
+                            openapi: "3.0.0",
+                            info: {
+                                title: "فروشگاه افلاک",
+                                version: "1.0.1",
+                                description: "اولین فروشگاه علی بهرامپور",
+                                contact: {
+                                    name: "ali bahrampoor",
+                                    url: "https://ali-bahrampoor.ir",
+                                    email: "ali.bahrampoor1380@gmail.com"
+                                }
+                            },
+                            servers: [
+                                {
+                                    url: "http://localhost:5000"
+                                }
+                            ],
+                            components: {
+                                securitySchemes: {
+                                    BearerAuth: {
+                                        type: "http",
+                                        scheme: "bearer",
+                                        bearerFormat: "JWT",
+
+                                    }
+                                }
+                            },
+                            security: [{BearerAuth: []}]
+                        },
+                        apis: ['./app/router/**/*.js']
+                    }),
+                {explorer: true}
+            )
+        )
+
+
+        // const systemInfo = require('systeminformation')
+        // console.log(await systemInfo.dockerInfo())
     }
 
     createServer() {

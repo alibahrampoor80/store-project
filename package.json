@@ -29,6 +29,7 @@
     "prisma": "^5.1.1",
     "redis": "^4.6.7",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "systeminformation": "^5.18.12"
   }
 }
