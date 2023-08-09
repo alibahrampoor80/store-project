@@ -4,7 +4,8 @@ const {userModel} = require("../../models/users");
 
 
 function getToken(headers) {
-    const [bearer, token] = headers?.accesstoken?.split(" ") || []
+    // console.log(headers.authorization)
+    const [bearer, token] = headers?.authorization?.split(" ") || []
     if (token && bearer?.toLowerCase() == 'bearer') return token
     throw createError.Unauthorized("حساب کاربری جهت ورود شناسایی نشد لطفا وارد حساب کاربری خود شوید")
 }

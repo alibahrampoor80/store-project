@@ -19,5 +19,5 @@ router.get('/:id', CategoryController.getCategoryById)
 router.delete('/remove/:id', CategoryController.removeCategory)
 
 module.exports = {
-    categoryRoutes: router
+    adminApiCategoryRouter: router
 }
