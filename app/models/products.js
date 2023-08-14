@@ -14,13 +14,11 @@ const productSchema = new mongoose.Schema({
     bookmarks: {type: [mongoose.Types.ObjectId], default: []},
     price: {type: Number, default: 0},
     discount: {type: Number, default: 0},
-    count: {type: Number,},
+    count: {type: Number},
     type: {type: String, required: true},
-    format: {type: String,},
+    format: {type: String},
     supplier: {type: mongoose.Types.ObjectId, required: true},
-    feature: {
-        type: Object,
-        default: {
+    feature: {type: Object, default: {
             length: "",
             height: "",
             width: "",
