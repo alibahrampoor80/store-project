@@ -8,7 +8,7 @@ const productSchema = Joi.object({
     text: Joi.string().error(createError.BadRequest("متن ارسال شده صحیح نمیباشد")),
     short_text: Joi.string().error(createError.BadRequest("متن ارسال شده صحیح نمیباشد")),
     tags: Joi.array().min(0).max(20).error(createError.BadRequest("برچسب ها نمیتواند بیشتر از 20 ایتم باشد")),
-    // colors: Joi.array().min(0).max(20).error(createError.BadRequest("رنگ های انتخابی  نمیتواند بیشتر از 20 ایتم باشد")),
+    colors: Joi.array().min(0).max(20).error(createError.BadRequest("رنگ های انتخابی  نمیتواند بیشتر از 20 ایتم باشد")),
     category: Joi.string().regex(MongoIDPattern).error(createError.BadRequest("دسته بندی مورد نظر یافت نشد")),
     price: Joi.number().error(createError.BadRequest("قیمت وارد شده صحیح نمیباشد")),
     discount: Joi.number().error(createError.BadRequest("تخفیف وارد شده صحیح نمیباشد")),

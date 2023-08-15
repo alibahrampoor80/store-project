@@ -5,9 +5,11 @@ const router = require('express').Router()
 
 
 router.post("/add", uploadFile.array('images', 10),
-    stringToArray('tags'), ProductController.addProduct)
+    stringToArray('tags'),  stringToArray('colors'), ProductController.addProduct)
 
 router.get('/list', ProductController.getAllProduct)
+router.get('/:id', ProductController.getOneProduct)
+router.delete('/remove/:id', ProductController.removeProductById)
 
 module.exports = {
     adminApiProductRouter: router
