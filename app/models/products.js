@@ -18,7 +18,8 @@ const productSchema = new mongoose.Schema({
     type: {type: String, required: true},
     format: {type: String},
     supplier: {type: mongoose.Types.ObjectId, required: true},
-    feature: {type: Object, default: {
+    feature: {
+        type: Object, default: {
             length: "",
             height: "",
             width: "",
@@ -30,6 +31,7 @@ const productSchema = new mongoose.Schema({
     },
 })
 
+productSchema.index({title: "text", short_text: "text", text: "text"})
 
 module.exports = {
     productModel: mongoose.model("product", productSchema)
