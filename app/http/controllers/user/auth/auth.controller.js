@@ -1,5 +1,6 @@
 const {getOtpSchema, checkOtpSchema} = require("../../../validator/user/auth.schema");
 const createError = require("http-errors");
+const {StatusCodes: httpStatus} = require('http-status-codes')
 const {
     numberRandomGenerator,
     signAccessToken,
@@ -19,9 +20,9 @@ class AuthController extends Controller {
             const result = await this.saveUser(mobile, code)
             if (!result) throw createError.Unauthorized("ورود شما انجام نشد")
 
-            return res.status(200).send({
+            return res.status(httpStatus.OK).send({
                 data: {
-                    status: 200,
+                    status: httpStatus.OK,
                     message: "کد اعتبار سنجی با موفیقت برای شما ارسال شد",
                     code,
                     mobile

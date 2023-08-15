@@ -3,6 +3,7 @@ const {categoryModel} = require("../../../models/category");
 const createError = require("http-errors");
 const {categorySchema, updateCategorySchema} = require("../../validator/admin/category.schema");
 const mongoose = require('mongoose')
+const {StatusCodes: httpStatus} = require('http-status-codes')
 
 class CategoryController extends Controller {
     async addCategory(req, res, next) {
@@ -12,9 +13,9 @@ class CategoryController extends Controller {
             await categorySchema.validateAsync(req.body)
             const category = await categoryModel.create({title, parent})
             if (!category) throw createError.InternalServerError("خطای داخلی")
-            return res.status(201).json({
+            return res.status(httpStatus.CREATED).json({
                 data: {
-                    status: 201,
+                    status: httpStatus.CREATED,
                     message: "دسته بندی با موفیقت افزوده شد!"
                 }
 
@@ -37,9 +38,9 @@ class CategoryController extends Controller {
                 ]
             })
             if (deleteResult.deletedCount == 0) throw createError.InternalServerError('حذف دسته بندی انجام نشد')
-            return res.status(200).json({
+            return res.status(httpStatus.OK).json({
                 data: {
-                    status: 200,
+                    status: httpStatus.OK,
                     message: "حذف دسته بندی با موفقیت انجام شد!"
                 }
             })
@@ -56,9 +57,9 @@ class CategoryController extends Controller {
             await this.checkExistCategory(id)
             const resultUpdate = await categoryModel.updateOne({_id: id}, {$set: {title}})
             if (resultUpdate.modifiedCount == 0) throw createError.InternalServerError("بروزرسانی انجام نشد!")
-            return res.status(200).json({
+            return res.status(httpStatus.OK).json({
                 data: {
-                    status: 200,
+                    status: httpStatus.OK,
                     message: "بروز رسانی با موفقیت انجام شد!"
                 }
             })
@@ -96,9 +97,9 @@ class CategoryController extends Controller {
             // ])
             const categories = await categoryModel.find({parent: undefined}, {__v: 0})
 
-            return res.status(200).json({
+            return res.status(httpStatus.OK).json({
                 data: {
-                    status: 200,
+                    status: httpStatus.OK,
                     categories
                 }
             })
@@ -131,9 +132,9 @@ class CategoryController extends Controller {
                     }
                 },
             ])
-            return res.status(200).json({
+            return res.status(httpStatus.OK).json({
                 data: {
-                    status: 200,
+                    status: httpStatus.OK,
                     category
                 }
             })
@@ -146,9 +147,9 @@ class CategoryController extends Controller {
     async getAllParent(req, res, next) {
         try {
             const parents = await categoryModel.find({parent: undefined}, {__v: 0})
-            return res.status(200).json({
+            return res.status(httpStatus.OK).json({
                 data: {
-                    status: 200,
+                    status: httpStatus.OK,
                     parents
                 }
             })
@@ -164,9 +165,9 @@ class CategoryController extends Controller {
             const {parent} = req.params
             const children = await categoryModel.find({parent}, {__v: 0, parent: 0})
 
-            return res.status(200).json({
+            return res.status(httpStatus.OK).json({
                 data: {
-                    status: 200,
+                    status: httpStatus.OK,
                     children
                 }
             })
@@ -182,8 +183,8 @@ class CategoryController extends Controller {
                     $match: {}
                 }
             ])
-            return res.status(200).json({
-                status: 200,
+            return res.status(httpStatus.OK).json({
+                status: httpStatus.OK,
                 categories
             })
         } catch (err) {
