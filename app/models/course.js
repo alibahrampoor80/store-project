@@ -31,7 +31,7 @@ const courseSchema = new mongoose.Schema({
     type: {type: String, required: true, default: "free"},
     time: {type: String, default: "00:00:00"},
     teacher: {type: mongoose.Types.ObjectId, ref: "user", required: true},
-    chapter: {type: [chapter], default: []},
+    chapters: {type: [chapter], default: []},
     students: {type: [mongoose.Types.ObjectId], default: [], ref: "user"}
 })
 
