@@ -1,11 +1,27 @@
 const Controller = require('../controllers')
 const {productSchema} = require("../../validator/admin/product.schema");
 const path = require("path");
-const {deleteFileInPublic, ListOfImagesFromRequest} = require("../../../utils/functions");
+const {
+    deleteFileInPublic, ListOfImagesFromRequest, copyObject, setFeatures, deleteInvalidPropertyInObject
+} = require("../../../utils/functions");
 const {productModel} = require("../../../models/products");
 const {ObjectIdValidator} = require("../../validator/public.validator");
 const createHttpError = require("http-errors");
 const {StatusCodes: httpStatus} = require('http-status-codes')
+
+const ProductBlackList = {
+    BOOKMARKS: "bookmarks",
+    LIKES: "likes",
+    DISLIKES: "dislikes",
+    COMMENTS: "comments",
+    SUPPLIER: "supplier",
+    WEIGHT: "weight",
+    WIDTH: "width",
+    LENGTH: "length",
+    HEIGHT: "height",
+    COLORS: "colors"
+}
+Object.freeze(ProductBlackList)
 
 class ProductController extends Controller {
     async addProduct(req, res, next) {
@@ -16,57 +32,22 @@ class ProductController extends Controller {
             const productBody = await productSchema.validateAsync(req.body)
 
             const {
-                title,
-                text,
-                short_text,
-                category,
-                tags,
-                count,
-                discount,
-                width,
-                height,
-                weight,
-                length,
-                colors
+                title, text, short_text, category, tags, count, discount, type
             } = productBody
 
             const supplier = req.user._id
-            let feature = {}, type = "physical"
 
-            feature.colors = colors
-            if (!isNaN(+width) || !isNaN(+height) || !isNaN(+weight) || !isNaN(+length)) {
-                if (!width) feature.width = 0
-                else feature.width = +width
-                if (!height) feature.height = 0
-                else feature.height = +height
-                if (!weight) feature.weight = 0
-                else feature.weight = +weight
-                if (!length) feature.length = 0
-                else feature.length = +length
 
-            } else {
-                type = "virtual"
-            }
+            let feature = setFeatures(req.body)
 
 
             const product = await productModel.create({
-                title,
-                text,
-                short_text,
-                category,
-                tags,
-                count,
-                discount,
-                images,
-                feature,
-                supplier,
-                type
+                title, text, short_text, category, tags, count, discount, images, feature, supplier, type
             })
 
             return res.status(httpStatus.CREATED).json({
                 data: {
-                    status: httpStatus.CREATED,
-                    message: "ثبت محصول با موفقیت انجام شد"
+                    status: httpStatus.CREATED, message: "ثبت محصول با موفقیت انجام شد"
                 }
             })
         } catch (err) {
@@ -85,6 +66,26 @@ class ProductController extends Controller {
 
     async editProduct(req, res, next) {
         try {
+            const {id} = req.params
+            const product = await this.findProduct(id)
+            const data = copyObject(req.body)
+
+            data.images = ListOfImagesFromRequest(req?.files || [], req.body.fileUploadPath)
+            data.feature = setFeatures(req.body)
+            let blackListField = Object.values(ProductBlackList)
+            deleteInvalidPropertyInObject(data, blackListField)
+
+            const updateProductResult = await productModel.updateOne({_id: product._id}, {$set: data})
+            if (updateProductResult.modifiedCount == 0) throw {
+                status: httpStatus.INTERNAL_SERVER_ERROR,
+                message: "خطای داخلی"
+            }
+
+            return res.status(httpStatus.OK).json({
+                data: {
+                    status: httpStatus.OK, message: "بروزرسانی با موفیقت انجام شد"
+                }
+            })
 
         } catch (err) {
             next(err)
@@ -99,8 +100,7 @@ class ProductController extends Controller {
             if (removeProductResult.deleteCount == 0) throw createHttpError.InternalServerError("حذف محصول انجام نشد!")
             return res.status(httpStatus.OK).json({
                 data: {
-                    status: httpStatus.OK,
-                    message: "حذف محصول با موفقیت انجام شد "
+                    status: httpStatus.OK, message: "حذف محصول با موفقیت انجام شد "
                 }
             })
 
@@ -118,7 +118,7 @@ class ProductController extends Controller {
             if (search) {
                 products = await productModel.find({
                     $text: {
-                        $search: new RegExp(search,'ig') || ""
+                        $search: new RegExp(search, 'ig') || ""
                     }
                 })
             } else {
@@ -128,8 +128,7 @@ class ProductController extends Controller {
 
             return res.status(httpStatus.OK).json({
                 data: {
-                    status: httpStatus.OK,
-                    products
+                    status: httpStatus.OK, products
                 }
             })
         } catch (err) {
@@ -143,8 +142,7 @@ class ProductController extends Controller {
             const product = await this.findProduct(id)
             res.status(httpStatus.OK).json({
                 data: {
-                    status: httpStatus.OK,
-                    product
+                    status: httpStatus.OK, product
                 }
             })
         } catch (err) {

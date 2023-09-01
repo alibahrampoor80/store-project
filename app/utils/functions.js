@@ -5,6 +5,7 @@ const redisClient = require('./init_redis')
 const path = require("path");
 const fs = require('fs')
 
+
 function numberRandomGenerator() {
     return Math.floor((Math.random() * 90000) + 10000)
 }
@@ -75,6 +76,7 @@ function deleteFileInPublic(fileAddress) {
         if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
     }
 }
+
 function ListOfImagesFromRequest(files, fileUploadPath) {
     if (files?.length > 0) {
         return ((files.map(file => path.join(fileUploadPath, file.filename))).map(item => item.replace(/\\/g, "/")))
@@ -82,24 +84,39 @@ function ListOfImagesFromRequest(files, fileUploadPath) {
         return []
     }
 }
+
 function setFeatures(body) {
-    const { colors, width, weight, height, length } = body;
-    let features = {};
-    features.colors = colors;
+    const {colors, width, weight, height, length} = body;
+    let feature = {};
+    feature.colors = colors;
     if (!isNaN(+width) || !isNaN(+height) || !isNaN(+weight) || !isNaN(+length)) {
-        if (!width) features.width = 0;
-        else features.width = +width;
-        if (!height) features.height = 0;
-        else features.height = +height;
-        if (!weight) features.weight = 0;
-        else features.weight = +weight;
-        if (!length) features.length = 0;
-        else features.length = +length;
+        if (!width) feature.width = 0;
+        else feature.width = +width;
+        if (!height) feature.height = 0;
+        else feature.height = +height;
+        if (!weight) feature.weight = 0;
+        else feature.weight = +weight;
+        if (!length) feature.length = 0;
+        else feature.length = +length;
     }
-    return features
+    return feature
 }
 
+function copyObject(object) {
+    return JSON.parse(JSON.stringify(object))
+}
 
+function deleteInvalidPropertyInObject(data = {}, blackListField = []) {
+    let nullData = ["", " ", "0", 0, null, undefined]
+
+    Object.keys(data).forEach(key => {
+        if (blackListField.includes(key)) delete data[key]
+        if (typeof data[key] == "string") data[key] = data[key].trim()
+        if (Array.isArray(data[key]) && Array.length > 0) data[key] = data[key].map(item => item.trim())
+        if (nullData.includes(data[key])) delete data[key]
+    })
+
+}
 
 module.exports = {
     numberRandomGenerator,
@@ -108,5 +125,7 @@ module.exports = {
     verifyRefreshToken,
     deleteFileInPublic,
     ListOfImagesFromRequest,
-    setFeatures
+    setFeatures,
+    copyObject,
+    deleteInvalidPropertyInObject
 }

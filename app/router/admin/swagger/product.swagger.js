@@ -201,6 +201,7 @@
  *              200:
  *                  description: success
  */
+
 /**
  * @swagger
  *  /admin/products/{id}:
@@ -216,6 +217,7 @@
  *              200:
  *                  description: success
  */
+
 /**
  * @swagger
  *  /admin/products/remove/{id}:
@@ -235,9 +237,10 @@
  *                          schema:
  *                              $ref: '#/definitions/publicDefinition'
  */
+
 /**
  * @swagger
- *  /admin/products/edit/{id}:
+ * /admin/products/edit/{id}:
  *      patch:
  *          tags: [Product(AdminPanel)]
  *          summary: create and save product
