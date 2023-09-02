@@ -29,6 +29,7 @@ const courseSchema = new mongoose.Schema({
     price: {type: Number, default: 0},
     discount: {type: Number, default: 0},
     type: {type: String, required: true, default: "free"},
+    status: {type: String, default: "notStarted"},//notStarted - completed - holding
     time: {type: String, default: "00:00:00"},
     teacher: {type: mongoose.Types.ObjectId, ref: "user", required: true},
     chapters: {type: [chapter], default: []},
