@@ -83,7 +83,8 @@ class ProductController extends Controller {
 
             return res.status(httpStatus.OK).json({
                 data: {
-                    status: httpStatus.OK, message: "بروزرسانی با موفیقت انجام شد"
+                    status: httpStatus.OK,
+                    message: "بروزرسانی با موفیقت انجام شد"
                 }
             })
 
@@ -100,7 +101,8 @@ class ProductController extends Controller {
             if (removeProductResult.deleteCount == 0) throw createHttpError.InternalServerError("حذف محصول انجام نشد!")
             return res.status(httpStatus.OK).json({
                 data: {
-                    status: httpStatus.OK, message: "حذف محصول با موفقیت انجام شد "
+                    status: httpStatus.OK,
+                    message: "حذف محصول با موفقیت انجام شد "
                 }
             })
 
@@ -128,7 +130,8 @@ class ProductController extends Controller {
 
             return res.status(httpStatus.OK).json({
                 data: {
-                    status: httpStatus.OK, products
+                    status: httpStatus.OK,
+                    products
                 }
             })
         } catch (err) {
@@ -142,7 +145,8 @@ class ProductController extends Controller {
             const product = await this.findProduct(id)
             res.status(httpStatus.OK).json({
                 data: {
-                    status: httpStatus.OK, product
+                    status: httpStatus.OK,
+                    product
                 }
             })
         } catch (err) {
