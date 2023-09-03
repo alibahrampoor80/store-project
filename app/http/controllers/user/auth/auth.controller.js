@@ -21,8 +21,8 @@ class AuthController extends Controller {
             if (!result) throw createError.Unauthorized("ورود شما انجام نشد")
 
             return res.status(httpStatus.OK).send({
+                status: httpStatus.OK,
                 data: {
-                    status: httpStatus.OK,
                     message: "کد اعتبار سنجی با موفیقت برای شما ارسال شد",
                     code,
                     mobile
@@ -47,7 +47,8 @@ class AuthController extends Controller {
             if (+user.otp.expireIn < now) throw createError.Unauthorized('کد شما منقضی شده است')
             const accessToken = await signAccessToken(user._id)
             const refreshToken = await signRefreshToken(user._id)
-            return res.json({
+            return res.status(httpStatus.OK).json({
+                status: httpStatus.OK,
                 data: {
                     accessToken,
                     refreshToken
@@ -66,7 +67,8 @@ class AuthController extends Controller {
             const user = await userModel.findOne({mobile})
             const accessToken = await signAccessToken(user._id)
             const newRefreshToken = await signRefreshToken(user._id)
-            return res.json({
+            return res.status(httpStatus.OK).json({
+                status: httpStatus.OK,
                 data: {
                     accessToken,
                     refreshToken: newRefreshToken

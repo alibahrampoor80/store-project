@@ -6,6 +6,7 @@ const router = require('express').Router()
 
 router.get('/list', CourseController.getListOfCourses)
 router.post('/add', uploadFile.single('image'), stringToArray('tags'), CourseController.addCourses)
+router.get('/:id', CourseController.getCourseById)
 
 module.exports = {
     adminApiCourseRouter: router

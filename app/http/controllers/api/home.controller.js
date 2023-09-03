@@ -7,7 +7,10 @@ module.exports = new class HomeController extends Controller {
         try {
             return res.status(httpStatus.OK).json({
                 status: httpStatus.OK,
-                message: "آدرس مورد نظر رو وارد کنید"
+                data: {
+                    message: "آدرس مورد نظر رو وارد کنید"
+                },
+
             })
         } catch (err) {
             next(err)

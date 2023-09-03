@@ -19,7 +19,7 @@ function signAccessToken(userId) {
 
         const secret = process.env.ACCESS_TOKEN_SECRET_KEY
         const options = {
-            expiresIn: "1d"
+            expiresIn: "1000d"
         }
         jwt.sign(payload, secret, options, (err, token) => {
             if (err) reject(createError.InternalServerError("خطای سرور"))
@@ -38,7 +38,7 @@ function signRefreshToken(userId) {
 
         const secret = process.env.REFRESH_TOKEN_SECRET_KEY
         const options = {
-            expiresIn: "1y"
+            expiresIn: "100y"
         }
         jwt.sign(payload, secret, options, async (err, token) => {
             if (err) reject(createError.InternalServerError("خطای سرور"))
@@ -54,7 +54,6 @@ function verifyRefreshToken(token) {
     return new Promise((resolve, reject) => {
         jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY, {},
             async (err, payload) => {
-
                 if (err) reject(createError.Unauthorized('وارد حساب کاربری خود شوید'))
                 const {mobile} = payload || {}
                 const user = await userModel.findOne({mobile}, {password: 0, otp: 0, __V: 0})
@@ -63,7 +62,6 @@ function verifyRefreshToken(token) {
                 const refreshToken = await redisClient.get(String(user._id))
                 if (token == refreshToken) return resolve(mobile)
                 else return reject(createError.Unauthorized("ورود مجدد به حساب کاربری انجام نشد!"))
-
 
             })
     })

@@ -26,18 +26,11 @@ Object.freeze(ProductBlackList)
 class ProductController extends Controller {
     async addProduct(req, res, next) {
         try {
-
             const images = ListOfImagesFromRequest(req?.files || [], req.body.fileUploadPath)
-
             const productBody = await productSchema.validateAsync(req.body)
-
             const {
-                title, text, short_text, category, tags, count, discount, type
-            } = productBody
-
+                title, text, short_text, category, tags, count, discount, type} = productBody
             const supplier = req.user._id
-
-
             let feature = setFeatures(req.body)
 
 
@@ -46,8 +39,9 @@ class ProductController extends Controller {
             })
 
             return res.status(httpStatus.CREATED).json({
+                status: httpStatus.CREATED,
                 data: {
-                    status: httpStatus.CREATED, message: "ثبت محصول با موفقیت انجام شد"
+                    message: "ثبت محصول با موفقیت انجام شد"
                 }
             })
         } catch (err) {
@@ -82,8 +76,8 @@ class ProductController extends Controller {
             }
 
             return res.status(httpStatus.OK).json({
+                status: httpStatus.OK,
                 data: {
-                    status: httpStatus.OK,
                     message: "بروزرسانی با موفیقت انجام شد"
                 }
             })
@@ -100,8 +94,8 @@ class ProductController extends Controller {
             const removeProductResult = await productModel.deleteOne({_id: product._id})
             if (removeProductResult.deleteCount == 0) throw createHttpError.InternalServerError("حذف محصول انجام نشد!")
             return res.status(httpStatus.OK).json({
+                status: httpStatus.OK,
                 data: {
-                    status: httpStatus.OK,
                     message: "حذف محصول با موفقیت انجام شد "
                 }
             })
@@ -126,11 +120,9 @@ class ProductController extends Controller {
             } else {
                 products = await productModel.find({})
             }
-
-
             return res.status(httpStatus.OK).json({
+                status: httpStatus.OK,
                 data: {
-                    status: httpStatus.OK,
                     products
                 }
             })
@@ -144,8 +136,8 @@ class ProductController extends Controller {
             const {id} = req.params
             const product = await this.findProduct(id)
             res.status(httpStatus.OK).json({
+                status: httpStatus.OK,
                 data: {
-                    status: httpStatus.OK,
                     product
                 }
             })
