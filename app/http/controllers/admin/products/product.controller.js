@@ -1,11 +1,11 @@
-const Controller = require('../controllers')
-const {productSchema} = require("../../validator/admin/product.schema");
+const Controller = require('../../controllers')
+const {productSchema} = require("../../../validator/admin/product.schema");
 const path = require("path");
 const {
     deleteFileInPublic, ListOfImagesFromRequest, copyObject, setFeatures, deleteInvalidPropertyInObject
-} = require("../../../utils/functions");
-const {productModel} = require("../../../models/products");
-const {ObjectIdValidator} = require("../../validator/public.validator");
+} = require("../../../../utils/functions");
+const {productModel} = require("../../../../models/products");
+const {ObjectIdValidator} = require("../../../validator/public.validator");
 const createHttpError = require("http-errors");
 const {StatusCodes: httpStatus} = require('http-status-codes')
 

@@ -1,4 +1,4 @@
-const {authController} = require("../../http/controllers/user/auth/auth.controller");
+const {authController} = require("../../http/controllers/admin/auth/auth.controller");
 const router = require('express').Router()
 
 

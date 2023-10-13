@@ -1,8 +1,8 @@
-const Controller = require('../controllers')
-const {courseModel} = require("../../../models/course");
+const Controller = require('../../controllers')
+const {courseModel} = require("../../../../models/course");
 const {StatusCodes: statusCode} = require('http-status-codes')
 const path = require("path");
-const {createCourseSchema} = require("../../validator/admin/course.schema");
+const {createCourseSchema} = require("../../../validator/admin/course.schema");
 const createHttpError = require("http-errors");
 const {isValidObjectId} = require("mongoose");
 
